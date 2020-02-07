@@ -25,6 +25,8 @@ public class ORDSTests {
         // run
 
         assertEquals(200, response.getStatusCode()); // 8
+        System.out.println(response.prettyPrint()); // 9
+        // it makes the jason response pretty (easy to see)
 
 
     }
