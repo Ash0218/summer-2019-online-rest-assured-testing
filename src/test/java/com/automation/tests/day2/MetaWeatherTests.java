@@ -16,6 +16,11 @@ public class MetaWeatherTests {
     /api/location/search/?query=london
     /api/location/search/?lattlong=36.96,-122.02
     /api/location/search/?lattlong=50.068,-5.316
+    /api/location/{woeid}/
+        "title": "San Francisco",
+        "location_type": "City",
+        "woeid": 2487956,
+        "latt_long": "37.777119, -122.41964"
      */
     private String baseURI = "https://www.metaweather.com/api/"; // 1
 
@@ -28,5 +33,18 @@ public class MetaWeatherTests {
         assertEquals(200, response.getStatusCode()); // 4
         System.out.println(response.prettyPrint()); // 5
 
+    }
+
+// check weather
+// /users/100 -> 100 is a path parameter.
+// /users/255?name=James/ -> name is a query parameter. key = value,
+//  key is a query parameter.
+    @Test
+    public void test2(){ // 6
+        Response response = given()
+                .pathParam("woeid", "2487956")
+                .get(baseURI+"/location/{woeid}"); // 7
+
+        System.out.println(response.prettyPrint()); // 8
     }
 }
