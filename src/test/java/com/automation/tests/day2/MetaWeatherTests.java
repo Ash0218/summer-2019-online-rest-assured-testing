@@ -21,6 +21,9 @@ public class MetaWeatherTests {
         "location_type": "City",
         "woeid": 2487956,
         "latt_long": "37.777119, -122.41964"
+
+        "woeid": 2287956 -> stands for Where On Earth ID, based on this
+         value, we can get weather info in specific place.
      */
     private String baseURI = "https://www.metaweather.com/api/"; // 1
 
