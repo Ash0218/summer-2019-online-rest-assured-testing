@@ -1,6 +1,5 @@
 package com.automation.tests.day2; // 012320
 
-import io.restassured.http.Header;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
@@ -84,6 +83,25 @@ public class ExchangeRatesAPITests {
         get(); // 23
 
         System.out.println(response.prettyPrint()); // 24
+    }
+
+
+    /*
+    Given request parameter "base" is "USD"
+    When user sends request to "api.openrates.io"
+    Then response code should be 200
+    And response body must contain "base": "USD"
+     */
+    @Test
+    public void test6(){ // 25
+        Response response = given().
+            baseUri(baseURI+"/latest").
+                queryParam("base", "USD").
+                get(); // 26
+        String body = response.getBody().asString(); // 27
+        assertEquals(200, response.getStatusCode()); // 28
+        assertTrue(body.contains("\"base\":\"USD\"")); // 29
+        // it verifies that "base" contains "USD"
     }
 
 }
