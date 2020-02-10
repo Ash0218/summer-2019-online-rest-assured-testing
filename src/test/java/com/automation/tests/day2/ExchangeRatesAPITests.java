@@ -22,6 +22,7 @@ public class ExchangeRatesAPITests {
         System.out.println(response.prettyPrint()); // 5
     }
 
+
     @Test
     public void test2(){ // 6
         Response response = given().get(baseURI+"/latest"); //7
@@ -32,6 +33,7 @@ public class ExchangeRatesAPITests {
         // or like this:
         assertEquals("application/json", response.getContentType()); // 10
     }
+
 
     // Task: get currency exchange rate for dollar. By default, it's euro.
     // GET https://api.exchangeratesapi.io/latest?base=USD HTTP/1.1
@@ -50,6 +52,7 @@ public class ExchangeRatesAPITests {
 
     }
 
+
     // Task: Verify that response body for latest currency rates which
     //  contains today's date.
     @Test
@@ -66,4 +69,21 @@ public class ExchangeRatesAPITests {
         assertEquals(200, response.getStatusCode()); // 21
         assertTrue(response.getBody().asString().contains("2020-02-10")); // 18
     }
+
+
+    // Task: get currency exchange rate for year 2000.
+    //  GET https://api.exchangeratesapi.io/history?start_at=2018-01-01&end_at=2018-09-01&base=USD&symbols=ILS.JPY
+    @Test
+    public void test5(){ // 22
+        Response response = given().
+        baseUri(baseURI+"/history").
+        queryParam("start_at", "2000-01-01").
+        queryParam("end_at", "2000-12-31").
+        queryParam("base", "USD").
+        queryParam("symbols", "EUR","JPY","GBP").
+        get(); // 23
+
+        System.out.println(response.prettyPrint()); // 24
+    }
+
 }
