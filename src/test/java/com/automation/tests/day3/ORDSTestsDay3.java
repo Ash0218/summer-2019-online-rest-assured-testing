@@ -139,9 +139,21 @@ public class ORDSTestsDay3 {
 
     }
 
-
+    // Write code to
+    // get info from countries as List<Map<String, ?>>
+    // prettyPrint() -> print json/xml/html in nice format and returns String, thus
+    //  we cannot retrieve without extraction ...
+    // prettyPeek() -> does the same job, but return Response object, and from that
+    //  object, we can get json path.
     @Test
     public void test5(){ // 20
-
+        JsonPath json = given().
+                accept("application/json").
+                when().
+                get("/countries").prettyPeek().jsonPath(); // 21
+        // prettyPeek() -> returns response, and from the response, we can
+        //  get info about the response object. If you use prettyPrint(), you
+        //  can't use jsonPath(). prettyPeek() get the response, so we can use
+        //  it to continue with the object.
     }
 }
