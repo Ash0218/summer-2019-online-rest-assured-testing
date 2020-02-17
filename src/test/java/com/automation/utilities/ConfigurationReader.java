@@ -38,7 +38,7 @@ public class ConfigurationReader {
             //  without handling checked exception, you cannot run a code.
             // IOException is the parent exception for all input, output.
 
-            System.out.println("Properties file was not loaded"); // 9
+            System.out.println("Failed to load properties file!"); // 9
 
             e.printStackTrace(); // 6
             // it means print error information
@@ -52,3 +52,4 @@ public class ConfigurationReader {
     }
 
 }
+
