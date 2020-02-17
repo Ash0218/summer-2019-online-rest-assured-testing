@@ -7,6 +7,9 @@ import org.junit.jupiter.api.BeforeAll;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.TimeUnit;
+
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
@@ -63,4 +66,18 @@ public class ORDSTestsDay3 {
         then assert that status code is 200
         and assert that region name is Europe
      */
+
+    @Test
+    public void test3(){ // 5
+        given().
+                accept("application/json").
+                pathParam("id", 1).
+                when().
+                        get("/regions/{id}").
+                // id here is from 1 b.c of the pathParam.
+                then().
+                        assertThat().statusCode(200).
+                        assertThat().body("region_name", is("Europe")).
+                        time(lessThan(1), TimeUnit.SECONDS); // 6
+    }
 }
