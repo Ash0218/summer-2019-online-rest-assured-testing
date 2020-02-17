@@ -54,4 +54,13 @@ public class ORDSTestsDay3 {
                 log().all(true); // 4
 
     }
+
+    /*
+    Task:
+        given path parameter is "/regions/{id}"
+        when user makes get request
+        and region id equals to 1
+        then assert that status code is 200
+        and assert that region name is Europe
+     */
 }
