@@ -44,7 +44,11 @@ public class ORDSTestsDay3 {
             //  new resource: POST /users?name=James&age=60&job-title=SDET
             //  or, to filter: GET /employee?name=Jamal get all employees with name Jamal
         when().get("/employees/{id}").
-            then().assertThat().statusCode(200).
-            and().assertThat().body("employee_id", is(100)); // 4
+        then().assertThat().statusCode(200).
+        and().assertThat().body("employee_id", is(100)).
+            // body ("phone_number": 515.123.4567) -> this is the data after run this class.
+            //  this is coming from "import static org.hamcrest.Matchers.*;
+                log().all(true); // 4
+
     }
 }
