@@ -45,9 +45,12 @@ public class ORDSTestsDay3 {
             //  or, to filter: GET /employee?name=Jamal get all employees with name Jamal
         when().get("/employees/{id}").
         then().assertThat().statusCode(200).
-        and().assertThat().body("employee_id", is(100)).
+        and().assertThat().body("employee_id", is(100),
             // body ("phone_number": 515.123.4567) -> this is the data after run this class.
             //  this is coming from "import static org.hamcrest.Matchers.*;
+                "department_id", is(90),
+                                        "last_name", is("King")).
+        // if the value does not match, it fails.
                 log().all(true); // 4
 
     }
