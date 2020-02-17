@@ -119,10 +119,16 @@ public class ORDSTestsDay3 {
         // Since firstEmployee is a map (key-value pair), we can iterate through it by using Entry. entry
         //  represents one key-value pair.
         for (Map.Entry<String, ?> entry : firstEmployee.entrySet()) { // 15
+            // <String, ?> -> ? includes every values like String, integer, etc. If you put
+            //  <String, String> then you can get castingException which cannot convert
+            //  from integer (or something else) to String value.
             System.out.println("key: " + entry.getKey()+", value: "+ entry.getValue()); // 16
         // if it works properly, it shows: key: employee_id, value: 100 ...
         }
 
+        // An item is an object. Whenever you need to read some property from the object, you put
+        //  object.property but, if response has multiple objects, we can get property from every
+        //  object.
         // get and print all last names:
         List<String> lastNames = json.get("items.last_name"); // 17
         for (String str : lastNames) { // 18
@@ -130,6 +136,12 @@ public class ORDSTestsDay3 {
             // if no error, it shows: Last name: [King]
             //                        Last name: [Kohhar] ...
         }
+
+    }
+
+
+    @Test
+    public void test5(){ // 20
 
     }
 }
