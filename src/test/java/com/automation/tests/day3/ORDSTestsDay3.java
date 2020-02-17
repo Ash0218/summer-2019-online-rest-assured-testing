@@ -2,6 +2,7 @@ package com.automation.tests.day3; // 012420
 
 import com.automation.utilities.ConfigurationReader;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.BeforeAll;
 
 import io.restassured.http.Header;
@@ -78,6 +79,24 @@ public class ORDSTestsDay3 {
                 then().
                         assertThat().statusCode(200).
                         assertThat().body("region_name", is("Europe")).
-                        time(lessThan(1), TimeUnit.SECONDS); // 6
+                        time(lessThan(10L), TimeUnit.SECONDS).
+                    // verify that response time is less than 10 seconds
+                        log().body(true); // 6
+                    // same as "pretty print". all = header + body + status code
+    }
+
+    // task: verify only specific objects
+    @Test
+    public void test4(){ // 7
+        JsonPath json = given().
+                accept("application/json").
+        when().
+                get("/employees").
+        thenReturn().jsonPath(); // 8
+        // items[employee1, employee2, employee3] | items[0] = employee1.first_name = Steven
+        String nameOfFirstEmployee = json.getString("items[0].first_name"); // 9
+
+        System.out.println("First employee name: "+ nameOfFirstEmployee); // 10
+        // if it works properly, it shows: "First employee name: Steven"
     }
 }
