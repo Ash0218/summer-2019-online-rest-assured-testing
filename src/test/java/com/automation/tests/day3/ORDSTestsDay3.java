@@ -9,6 +9,8 @@ import io.restassured.http.Header;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.*;
@@ -93,10 +95,41 @@ public class ORDSTestsDay3 {
         when().
                 get("/employees").
         thenReturn().jsonPath(); // 8
+
         // items[employee1, employee2, employee3] | items[0] = employee1.first_name = Steven
+
         String nameOfFirstEmployee = json.getString("items[0].first_name"); // 9
+        String nameOfLastEmployee = json.getString("items[-1].first_name"); // 11
+        // -1 -> last index
 
         System.out.println("First employee name: "+ nameOfFirstEmployee); // 10
         // if it works properly, it shows: "First employee name: Steven"
+
+        System.out.println("Last employee name: "+ nameOfLastEmployee); // 12
+        // if it works properly, it shows: "Last employee name: Kevin"
+
+       // in JSon, employee looks like object that consists of params and their values.
+        // we can parse that json object and store in the map.
+        Map<String, ?> firstEmployee = json.get("items[0]"); // 13
+        // <String, String> -> does not specify data.
+        // it can be <String, ?> -> ? can be String or not
+        System.out.println(firstEmployee); // 14
+        // if it works properly, the data showed like a map. ex: {employee_id=100, first_name=Steven, ...}
+
+        // Since firstEmployee is a map (key-value pair), we can iterate through it by using Entry. entry
+        //  represents one key-value pair.
+        for (Map.Entry<String, ?> entry : firstEmployee.entrySet()) { // 15
+            System.out.println("key: " + entry.getKey()+", value: "+ entry.getValue()); // 16
+        // if it works properly, it shows: key: employee_id, value: 100 ...
+        }
+
+        // get and print all last names:
+        List<String> lastNames = json.get("items.last_name"); // 17
+        for (String str : lastNames) { // 18
+            System.out.println("Last employee: "+ str); // 19
+            // if no error, it shows: Last name: [King]
+            //                        Last name: [Kohhar] ...
+        }
+
     }
 }
