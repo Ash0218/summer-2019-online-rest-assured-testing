@@ -9,6 +9,8 @@ import io.restassured.http.Header;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -155,5 +157,61 @@ public class ORDSTestsDay3 {
         //  get info about the response object. If you use prettyPrint(), you
         //  can't use jsonPath(). prettyPeek() get the response, so we can use
         //  it to continue with the object.
+        // If you exclude prettyPeek(), then you will not see detailed info about response.
+
+        List<HashMap<String, ?>> allCountries = json.get("items"); // 22
+        System.out.println(allCountries); // 23
+        // it shows:
+        //  "items": [
+        //      {
+        //          "country_id": "AR", ...
+
+        // When we read data from json response, values are not only Strings, so
+        //  if we are not sure that all values will have same data type, we
+        //  can put ?.
+        for (HashMap<String, ?> map: allCountries){ // 24
+            System.out.println(map); // 25
+            // it shows: {country_id=CA, ...}
+        }
     }
+
+    // get collection of employees' salaries then sort it and print it
+    @Test
+    public void test6(){ // 26
+        List<Integer> salaries = given().
+                                        accept("application/json").
+                                when().
+                                        get("/employees").
+                                thenReturn().jsonPath().get("items.salary"); // 27
+      //  Collections.sort(salaries); // 28
+        // sort from small to large
+
+        Collections.reverse(salaries); // 30
+        // sort from large to small
+        System.out.println(salaries); // 29
+        // it shows: [2500, ...]
+    }
+
+
+    // get collection of phone numbers from employees and replace
+    //  all dots "." in every phone number with dash "-"
+    @Test
+    public void test7(){ // 31
+        List<String> phoneNumbers=given().
+            accept("application/json").
+            when().get("/employees").
+            thenReturn().jsonPath().get("item.phone_number"); // 32
+
+        // Replace each element of this list with the result of applying
+        //  the operator to that element.
+        // replace "." with "-" in every value
+        phoneNumbers.replaceAll(p -> p.replace(".", "-")); // 34
+        System.out.println(phoneNumbers); // 33
+    }
+
+
+    /*
+    Given accept as Json
+
+     */
 }
