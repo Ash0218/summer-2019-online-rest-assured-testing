@@ -1,7 +1,9 @@
 package com.automation.tests.day3; // 012420
 
 import com.automation.utilities.ConfigurationReader;
+import com.sun.xml.xsom.impl.Ref;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -201,6 +203,7 @@ public class ORDSTestsDay3 {
             accept("application/json").
             when().get("/employees").
             thenReturn().jsonPath().get("item.phone_number"); // 32
+        // it calls Gpath (GroovyPath), like Xpath(XMLpath).
 
         // Replace each element of this list with the result of applying
         //  the operator to that element.
@@ -221,6 +224,18 @@ public class ORDSTestsDay3 {
      */
     @Test
     public void test8(){ // 35
+        Response response = given().
+            accept(ContentType.JSON).
+            pathParam("id", 1700).
+        when().
+            get("/locations/{id}"); // 36
 
+        response.
+            then().
+                assertThat().body("location_id", is(1700)).
+                assertThat().body("postal_code", is("98199")).
+                assertThat().body("city", is("Seattle")).
+                assertThat().body("state_province", is("Washington")).
+                log().body(); // 37
     }
 }
