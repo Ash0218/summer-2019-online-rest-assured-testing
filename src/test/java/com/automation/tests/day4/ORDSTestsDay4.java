@@ -187,6 +187,22 @@ public class ORDSTestsDay4 {
  then assert that status code is 200
  then user verifies that every employee has positive salary
      */
+    // to switch to java 9, add/ replace it in pom.xml:
+    /*
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+     */
+
     @Test
     @DisplayName("Verify that every employee has positive salary")
     public void test6(){ // 23
@@ -198,6 +214,7 @@ public class ORDSTestsDay4 {
                 assertThat().
                     statusCode(200).
                     body("items.salary", everyItem(greaterThan(0))); // 24
+
         // Whenever you specify path as items.salary, you will get collection of salaries
         //  then to check every single value.
         // we can use everyItem(is()), everyItem(greaterThan())
@@ -208,5 +225,68 @@ public class ORDSTestsDay4 {
         For example:
         <pre>assertThat(Arrays.asList("bar", "baz"), everyItem(startsWith("ba")))</pre>
          */
+    }
+
+    /*
+    Task:
+        given path parameter is "/employees/{id}"
+        and path parameter is 101
+        when user makes get request
+        then assert that status code is 200
+        and verifies that phone number is 515-123-4568
+     */
+
+    @Test
+    @DisplayName("Verify that employee 101 has following phone number: 515-123-4568 ")
+    public void test7(){ // 25
+        Response response = given().
+                                accept(ContentType.JSON).
+                            when().
+                                get("/employees/{id}", 101); // 26
+        assertEquals(200, response.getStatusCode()); // 27
+
+        String expected = "515-123-4568"; // 28
+        String actual = response.jsonPath().get("phone_number"); // 29
+
+        expected = expected.replace("-", "."); // 30
+        assertEquals(expected, actual); // 31
+    }
+
+
+    /* Task: verify that body returns following salary information after sorting from higher to lower
+     * given path parameter is "/employees"
+     * when user makes get request
+     * then assert that status code is 200
+     * and verify that body returns following salary information after sorting from higher to lower
+     *  24000, 17000, 17000, 12008, 11000,
+     *  9000, 9000, 8200, 8200, 8000,
+     *  7900, 7800, 7700, 6900, 6500,
+     *  6000, 5800, 4800, 4800, 4200,
+     *  3100, 2900, 2800, 2600, 2500
+     */
+
+    @Test
+    @DisplayName("verify that body returns following salary information after sorting from higher to lower (after sorting it in descending order)")
+    public void test8(){ // 32
+        List<Integer> expectedSalaries = List.of(24000, 17000, 17000, 12008, 11000,
+                                                9000, 9000, 8200, 8200, 8000,
+                                                7900, 7800, 7700, 6900, 6500,
+                                                6000, 5800, 4800, 4800, 4200,
+                                                3100, 2900, 2800, 2600, 2500); // 33
+        Response response = given().
+                                    accept(ContentType.JSON).
+                            when().
+                                    get("/employees"); // 34
+        assertEquals(200, response.statusCode()); // 35
+
+        List<Integer> actualSalaries = response.jsonPath().getList("items.salary"); // 36
+
+        Collections.sort(actualSalaries, Collections.reverseOrder()); // 39
+        // without sort, it has an error b.c actualSalaries and expectedSalaries do not match.
+        System.out.println(actualSalaries); // 37
+
+        assertEquals(expectedSalaries, actualSalaries, "Salaries are not matching"); // 38
+
+
     }
 }
