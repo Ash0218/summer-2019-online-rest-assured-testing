@@ -286,7 +286,69 @@ public class ORDSTestsDay4 {
         System.out.println(actualSalaries); // 37
 
         assertEquals(expectedSalaries, actualSalaries, "Salaries are not matching"); // 38
-
-
     }
+
+
+    /*
+    Given accept type as JSON
+    And path parameter is id with value 2900
+    When user sends get request to /locations/{id}  -> this is path parameter b.c it has /{}. Query parameter has question mark (?).
+    Then user verifies that status code is 200
+        |street_address         |city  |postal_code|country_id|state_province|
+        |20 Rue des Corps-Saints|Geneva|1730       |CH        |Geneve        |
+ */
+
+    /*
+    key         :  value    -> all together is entry
+    "location_id": 2900,
+    "street_address": "20 Rue des Corps-Saints",
+    "postal_code": "1730",
+    "city": "Geneva",
+    "state_province": "Geneve",
+    "country_id": "CH"
+     */
+    @Test
+    @DisplayName("Verify that JSON body has following entries")
+    public void test9(){ // 40
+            given().
+                    accept(ContentType.JSON).
+                    pathParam("id", 2900).
+            when().
+                    get("/locations/{id}").
+            then().
+                    assertThat().
+                        statusCode(200).
+                        body("", hasEntry("street_address", "20 Rue des Corps-Saints")).
+                        body("", hasEntry("city", "Geneva")).
+                        body("", hasEntry("postal_code", "1730")).
+                        body("", hasEntry("country_id", "CH")).
+                        body("", hasEntry("state_province", "Geneva")).
+                        log().all(true); // 41
+    }
+
+    // or you can use test9_2() instead of test9()
+    @Test
+    @DisplayName("Verify that JSON body has following entries")
+    public void test9_2(){ // 42
+        given().
+                accept(ContentType.JSON).
+                pathParam("id", 2900).
+                when().
+                get("/locations/{id}").
+                then().
+                assertThat().
+                statusCode(200).
+                body("street_address", is("20 Rue des Corps-Saints")).
+                body("city", is("Geneva")).
+                body("postal_code", is("1730")).
+                body("country_id", is("CH")).
+                body("state_province", is("Geneva")).
+                log().all(true); // 43
+    }
+
+
+
+
 }
+
+
