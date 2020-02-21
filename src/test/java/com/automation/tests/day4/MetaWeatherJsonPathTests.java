@@ -29,15 +29,35 @@ public class MetaWeatherJsonPathTests {
     }
 
 
+    /**
+     * TASK:
+     * Given accept type is JSON
+     * When users sends a GET request to "/search"
+     * And query parameter is 'New'
+     * Then user verifies that payload contains 5 objects
+     */
+    @Test
+    @DisplayName("Verify that there are 5 cities that are matching 'New'")
+    public void test1(){ // 3
+        given().
+                accept(ContentType.JSON).
+                queryParam("query", "New").
+                // query parameter has ? mark. EX: /api/location/search/?query=san
+        when().
+                get("/search").
+                // path should be after location b.c the meta weather uri is:
+                //  meta.weather.uri=https://www.metaweather.com/api/location
+        then().
+                assertThat().
+                    statusCode(200).
+                    body("", hasSize(5)).
+        // 5 -> b.c it is the requirement:
+        //  "Then user verifies that payload contains 5 objects"
+                    log().body(true); // 4 4:26:49
+    }
 }
 
-/**
- * TASK
- * Given accept type is JSON
- * When users sends a GET request to "/search"
- * And query parameter is 'New'
- * Then user verifies that payload contains 5 objects
- */
+
 
 /**
  * TASK
