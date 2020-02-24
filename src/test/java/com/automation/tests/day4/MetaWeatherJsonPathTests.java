@@ -10,10 +10,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.*;
@@ -134,24 +131,29 @@ public class MetaWeatherJsonPathTests {
                 // hasItems - exact match
                 // contains - partial match
     }
-}
 
 
+    /*
+     * TASK
+     * Given accept type is JSON
+     * When users sends a GET request to "/search"
+     * And query parameter is 'Las'
+     * Then verify that every item in payload has location_type City
+     */
+    @Test
+    @DisplayName("Verify that every item in payload has location_type City")
+    public void test4(){ // 21
+        given().
+                accept(ContentType.JSON).
+                queryParam("query", "Las").
+        when().
+                get("/search").
+        then().assertThat().body("location_type", everyItem(is("City"))).
+        log().all(true); // 22
+    }
 
 
-
-
-
-
-/*
- * TASK
- * Given accept type is JSON
- * When users sends a GET request to "/search"
- * And query parameter is 'Las'
- * Then verify that every item in payload has location_type City
- */
-
-/*
+    /*
  * TASK
  * Given accept type is JSON
  * When users sends a GET request to "/location"
@@ -165,4 +167,29 @@ public class MetaWeatherJsonPathTests {
  * |Weather Underground |
  * |World Weather Online|
  * */
+    @Test
+    @DisplayName("Verify following that payload contains weather forecast sources")
+    public void test5(){ // 23
+        List<String> expected = Arrays.asList("BBC", "Forecast.io", "HAMweather", "Met Office",
+                                               "OpenWeatherMap", "Weather Underground",
+                                                "World Weather Online"); // 24
+        Response response = given().
+                                    accept(ContentType.JSON).
+                                    pathParam("id", 44418).
+                            when().
+                                    get("/location/{id}").prettyPeek(); // 25
+                                    // {id} should be same with pathParam "id". Ex: if pathParam "woeid" -> {woeid}
+        List<String> actual = response.jsonPath().getList("sources.title"); // 26
+
+        assertEquals(expected, actual); // 27
+
+
+    }
+
+}
+
+
+
+
+
 

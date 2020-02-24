@@ -101,6 +101,7 @@ public class ORDSTestsDay4 {
                                     queryParam("q", "{\"country_id\":\"US\"}").
                             when().
                                     get("/countries"); // 9
+                            // it has new Response();
 
         JsonPath jsonPath = response.jsonPath(); // 10
         // jsonPath represents the body of the data: [{"rel":"describedby",...}]
