@@ -1,5 +1,6 @@
 package com.automation.tests.day5; // 012820
 
+import com.automation.pojos.Job;
 import com.automation.utilities.ConfigurationReader;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -29,6 +30,19 @@ public class POJOTesting {
     @Test
     @DisplayName("Get job info from JSON and convert it into POJO")
     public void test1(){ // 3
+        Response response = given().
+                                accept(ContentType.JSON).
+                            when().
+                                get("/jobs"); // 4
 
+        JsonPath jsonPath = response.jsonPath(); // 5
+
+        // This is deserialization from JSON to POJO (java object)
+        Job job = jsonPath.getObject("item[0]", Job.class); // 6
+        // job.class type of POJO that you gonna create from JSON
+
+        System.out.println(job); // 7
+
+        System.out.println("Job id: "+job.getJob_id()); // 8
     }
 }

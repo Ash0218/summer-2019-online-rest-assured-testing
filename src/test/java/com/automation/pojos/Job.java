@@ -4,9 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Job { // 1
     @SerializedName("job_id")
-    // @SerializedName helps to get the real data from the source (here, Postman)
-    //  #2 jobId is wrong -> it should be "job_id" like the Postman, so @SerializedName
-    //  helps to figure out.
+    // @SerializedName helps to get the real data from the source (here, Postman = JSON)
+    //  #2 jobId is wrong -> it should be "job_id" like the Postman (JSON), so @SerializedName
+    //  helps to figure out. If you don't use @SerializedName, then GSON will map them
+    //  automatically.
     private String jobId; // 2
     private String job_title; // 3
     private Integer min_salary; // 4
