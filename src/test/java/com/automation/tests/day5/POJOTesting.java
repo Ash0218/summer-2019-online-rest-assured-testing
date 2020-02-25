@@ -2,6 +2,7 @@ package com.automation.tests.day5; // 012820
 
 import com.automation.pojos.Job;
 import com.automation.utilities.ConfigurationReader;
+import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -44,5 +45,31 @@ public class POJOTesting {
         System.out.println(job); // 7
 
         System.out.println("Job id: "+job.getJob_id()); // 8
+    }
+
+
+    @Test
+    @DisplayName("Convert POJO to JSON")
+    public void test2(){ // 9
+        Job sdet = new Job("SDET", "Software Development Engineer in Test", 5000, 20000); // 10
+
+        Gson gson = new Gson(); // 12
+        // Convert to Gson.
+
+      //  gson.toJson(sdet); // 13
+        // convert POJO to JSON -> serialization
+
+        String json = gson.toJson(sdet); // 15
+
+        System.out.println("JSON file :" + json); // 11
+        System.out.println("From toString(): "+ sdet); // 16
+      //  System.out.println(gson.toJson(sdet)); // 14
+    }
+
+
+    @Test
+    @DisplayName("Convert JSON into collection of POJO's")
+    public void test3(){ // 17
+
     }
 }
