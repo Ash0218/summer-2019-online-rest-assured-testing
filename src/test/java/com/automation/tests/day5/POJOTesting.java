@@ -70,6 +70,18 @@ public class POJOTesting {
     @Test
     @DisplayName("Convert JSON into collection of POJO's")
     public void test3(){ // 17
+        Response response = given().
+                accept(ContentType.JSON).
+                when().
+                get("/jobs"); // 18
 
+        JsonPath jsonPath = response.jsonPath(); // 19
+        List<Job> jobs = jsonPath.getList("items", Job.class); // 20
+        // for the collection of jobs, I used "List<Job>." If it is one job, I'd
+        //  use "Job" like #10.
+
+        for (Job job : jobs){ // 21
+            System.out.println(job); // 22
+        }
     }
 }
