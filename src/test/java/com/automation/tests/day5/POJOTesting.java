@@ -1,6 +1,7 @@
 package com.automation.tests.day5; // 012820
 
 import com.automation.pojos.Job;
+import com.automation.pojos.Location;
 import com.automation.utilities.ConfigurationReader;
 import com.google.gson.Gson;
 import io.restassured.RestAssured;
@@ -81,7 +82,36 @@ public class POJOTesting {
         //  use "Job" like #10.
 
         for (Job job : jobs){ // 21
-            System.out.println(job); // 22
+            System.out.println(job.getJob_title()); // 22
         }
+
+        for (Job job : jobs){ // 23
+            System.out.println(job); // 24
+        }
+    }
+
+    @Test
+    @DisplayName("Convert from JSON to Location POJO")
+    public void test4(){ // 25
+        Response response = given().
+                                    accept(ContentType.JSON).
+                            when().
+                                    get("/locations/{location_id}", 2500); // 26
+        Location location = response.jsonPath().getObject("", Location.class); // 27
+
+        System.out.println(location); // 28
+
+
+        Response response2 = given().
+                accept(ContentType.JSON).
+                when().
+                get("/locations"); // 29
+
+        List<Location> locations = response2.jsonPath().getList("items", Location.class); // 30
+
+        for (Location l : locations) { // 31
+            System.out.println(l); // 32
+        }
+
     }
 }
