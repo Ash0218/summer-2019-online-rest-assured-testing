@@ -1,5 +1,6 @@
 package com.automation.tests.day6; // 013020
 
+import com.automation.pojos.Spartan;
 import com.automation.utilities.ConfigurationReader;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -56,8 +57,10 @@ public class SpartanTests {
     @Test
     @DisplayName("Verify that /spartans end-point returns 200 and content type as XML")
     public void test2(){ // 5
-        // accept(ContentType.XML) -> you are asking for body format
-        // contentType(ContentType.XML) -> you are verifying that body format is XML
+        // asking:
+        // accept(ContentType.XML) -> you are asking for payload format as XML from web service
+        // receiving:
+        // contentType(ContentType.XML) -> you are verifying that payload's format is XML
         given().
                 accept(ContentType.XML).
                 when().
@@ -73,7 +76,7 @@ public class SpartanTests {
     Task 3:
     given accept content type as XML
     when user sends GET request to /spartans
-    then user saves payload in collection
+    then user saves payload into collection
      */
     @Test
     @DisplayName("Save payload into java collection")
@@ -92,4 +95,66 @@ public class SpartanTests {
         }
 
     }
+
+
+    /* After adding Spartan in pojos package,
+    Task 4:
+    given accept content type as XML
+    when user sends GET request to /spartans
+    then user saves payload into collection of Spartan (in pojos package)
+     */
+    @Test
+    @DisplayName("Save payload into java collection of Spartan")
+    public void test4(){ // 12
+        Response response = given().
+                                contentType(ContentType.JSON).
+                            when().
+                                get("/spartans").prettyPeek(); // 13
+
+        // whenever you see: Class object = response.jsonPath.getObject() | deserialization
+        List<Spartan> collection = response.jsonPath().getList("", Spartan.class); // 14
+        // used "getList" instead of "get" b.c get doesn't know how to convert pojos into Map or List, so
+        //  it shows hashcodes. getList can coverts pojos into List. And the data type is Spartan.
+        // "" -> doesn't have anything b.c in the pojo, the first "[" in the result has no data.
+
+        for (Spartan spartan : collection){ // 15
+            System.out.println(spartan); // 16
+        }
+    }
+
+
+    /*
+    Task 5:
+    given accept content type as JSON
+    when user sends POST request to /spartans
+    then user should be able to create new spartan
+        |gender|name          |phone      |
+        | male |Mister Twister| 5712134235|
+
+    then user verifies that status code is 201
+
+    201 - mean created. Whenever you POST something, you should get back 201 status code
+     in case of created record.
+     */
+    @Test
+    @DisplayName("Create new spartan and verify that status code is 201")
+    public void test5(){ // 17
+        Spartan spartan = new Spartan(); // 18
+        spartan.setGender("male"); // 19
+        spartan.setName("Mister Twister"); // 20
+        spartan.setPhone(5712134235L); // 21
+
+        // from here: created after #5-13 in Spartan.java
+        // builder pattern: one of the design patterns in OOP
+        Spartan spartan1 = new Spartan().
+                                withGender("Male").
+                                withName("Some User").
+                                withPhone(5712134235L); // 22
+        System.out.println(spartan1); // 23
+    }
+
+
+
+
+
 }

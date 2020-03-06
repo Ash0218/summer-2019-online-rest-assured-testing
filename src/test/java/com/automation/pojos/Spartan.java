@@ -16,8 +16,11 @@ public class Spartan {
     private int spartanId; // 1
     // spartanId is different from id in the task, so we need @SerializedName
     private String name; // 2
+    // "name" -> must match
     private String gender; // 3
+    // "gender" -> must match
     private long phone; // 4
+    // "phone" -> must match
     // after #4, right click -> Generate -> Getter and Setter -> select all -> ok
     //  Then, right click -> Generate -> constructor -> select all -> ok
     //  Then, right click -> Generate -> toString() -> select all -> ok
@@ -31,7 +34,7 @@ public class Spartan {
 
 
 
-
+// from here, added after #4
     public Spartan(int spartanId, String name, String gender, long phone) {
         this.spartanId = spartanId;
         this.name = name;
@@ -80,5 +83,22 @@ public class Spartan {
                 ", gender='" + gender + '\'' +
                 ", phone=" + phone +
                 '}';
+    }
+    // until here, added after #4
+
+
+    public Spartan withPhone(long phone){ // 5
+        this.phone = phone; // 6
+        return this; // 7
+    }
+
+    public Spartan withName(String name){ // 8
+        this.name = name; // 9
+        return this; // 10
+    }
+
+    public Spartan withGender(String gender){ // 11
+        this.gender = gender; // 12
+        return this; // 13
     }
 }
