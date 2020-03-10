@@ -139,18 +139,44 @@ public class SpartanTests {
     @Test
     @DisplayName("Create new spartan and verify that status code is 201")
     public void test5(){ // 17
+        // #22: created after #5-13 in Spartan.java
+        // builder pattern: one of the design patterns in OOP
+        // Instead of having too many different constructors, we can use
+        //  builder pattern and chain with {propertyName} methods to specify properties of an object
+        Spartan spartan1 = new Spartan().
+                withGender("Male").
+                withName("Some User").
+                withPhone(5712134235L); // 22
+
+
         Spartan spartan = new Spartan(); // 18
-        spartan.setGender("male"); // 19
+        spartan.setGender("Male"); // 19
+        // Male or Female
         spartan.setName("Mister Twister"); // 20
         spartan.setPhone(5712134235L); // 21
+        // at least 10 digits
 
-        // from here: created after #5-13 in Spartan.java
-        // builder pattern: one of the design patterns in OOP
-        Spartan spartan1 = new Spartan().
-                                withGender("Male").
-                                withName("Some User").
-                                withPhone(5712134235L); // 22
-        System.out.println(spartan1); // 23
+
+        Response response = given().
+                                contentType(ContentType.JSON).
+                                body(spartan1).
+                            when().post("/spartans"); // 23
+        assertEquals(201, response.getStatusCode(), "Status code is wrong!"); // 24
+        assertEquals("application/json", response.getContentType(), "Content type is invalid!"); // 25
+        assertEquals(response.jsonPath().getString("success"), "A Spartan is Born!"); // 27
+
+        response.prettyPrint(); // 26
+
+        // #27, 28 shows the created data from above
+        Spartan spartan_from_response = response.jsonPath().getObject("data", Spartan.class); // 27
+
+        System.out.println("Spartan id: "+spartan_from_response.getSpartanId()); // 28
+
+        // delete spartan that you just created above
+        when().delete("/spartans/{id}", spartan_from_response.getSpartanId()).
+                prettyPeek().
+                then().assertThat().statusCode(204); // 29
+        // 204 means no content
     }
 
 
