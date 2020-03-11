@@ -173,9 +173,9 @@ public class SpartanTests {
         System.out.println("Spartan id: "+spartan_from_response.getSpartanId()); // 28
 
         // delete spartan that you just created above
-        when().delete("/spartans/{id}", spartan_from_response.getSpartanId()).
-                prettyPeek().
-                then().assertThat().statusCode(204); // 29
+      //  when().delete("/spartans/{id}", spartan_from_response.getSpartanId()).
+      //          prettyPeek().
+       //         then().assertThat().statusCode(204); // 29
         // 204 means no content
     }
 

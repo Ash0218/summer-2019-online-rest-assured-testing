@@ -31,6 +31,7 @@ This method can POST new spartan
 @return response object
  */
 public Response postSpartan(String filePath){ // 5
+    RestAssured.baseURI = ConfigurationReader.getProperty("spartan.uri"); // 13
     File file = new File(filePath); // 6
     RestAssured.baseURI = ConfigurationReader.getProperty("spartan.uri"); // 7
     Response response = given().
@@ -38,5 +39,17 @@ public Response postSpartan(String filePath){ // 5
             body(file).
             when().post("/spartans"); // 8
     return response; // 9
+}
+
+/*
+Method to delete spartan
+@param id of spartan that you would like to delete
+@return response object that you can assert later
+ */
+public Response deleteSpartanById(int id){ // 10
+    Response response = RestAssured.when().delete("/spartans/{id}", id); // 11
+
+    return response; // 12
+
 }
 }
