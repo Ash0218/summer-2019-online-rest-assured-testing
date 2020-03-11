@@ -11,17 +11,19 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class APIUtilities {
+    private String URI = ConfigurationReader.getProperty("spartan.uri"); // 14
 /*
 This method can POST new spartan
 @param spartan POJO
 @return response object
  */
-    public Response postSpartan(Spartan spartan){ // 1
-        RestAssured.baseURI = ConfigurationReader.getProperty("spartan.uri"); // 2
+    public Response postSpartan(Spartan spartan){ // 1,2
         Response response = given().
                 contentType(ContentType.JSON).
+                basePath(URI).
                 body(spartan).
-                when().post("/spartans"); // 3
+                when().
+                post("/spartans"); // 3
         return response; // 4
     }
 
@@ -31,8 +33,9 @@ This method can POST new spartan
 @return response object
  */
 public Response postSpartan(String filePath){ // 5
-    RestAssured.baseURI = ConfigurationReader.getProperty("spartan.uri"); // 13
+    RestAssured.baseURI = ConfigurationReader.getProperty("spartan.uri"); // 12
     File file = new File(filePath); // 6
+    // it will read the spartan.json file under target package
     RestAssured.baseURI = ConfigurationReader.getProperty("spartan.uri"); // 7
     Response response = given().
             contentType(ContentType.JSON).
@@ -47,9 +50,10 @@ Method to delete spartan
 @return response object that you can assert later
  */
 public Response deleteSpartanById(int id){ // 10
-    Response response = RestAssured.when().delete("/spartans/{id}", id); // 11
+    RestAssured.baseURI = ConfigurationReader.getProperty("spartan.uri"); // 13
+    return RestAssured.when().delete("/spartans/{id}", id); // 11
 
-    return response; // 12
+
 
 }
 }
