@@ -205,12 +205,14 @@ public class SpartanTests {
         // collected all user IDs
 
         Collections.sort(userIDs, Collections.reverseOrder()); // 41
-        // sorted user IDs in descending order
+        // sorted user IDs in descending order from biggest to smallest
         System.out.println("Before: "+userIDs); // 44
 
         for (int i=0; i< userIDs.size()/2; i++){ // 42
+            // userIDs.size()/2 -> represents half of the spartans
             when().delete("/spartans/{id}", userIDs.get(i)); // 43
         } // went through half of the collection, and deleted half of the users
+          // this will delete spartan based on id that you specify
 
         System.out.println("After: " +userIDs); // 40
         //    Response response2 = when().delete("/spartans/{id}", idOfTheUserThatYouWantToDelete); // 36
