@@ -179,8 +179,51 @@ public class SpartanTests {
         // 204 means no content
     }
 
+    // created spartan.json file under target, and APIUtilities under utilities
+
+    @Test
+    @DisplayName("Delete user")
+    public void test6(){ // 30
+        int idOfTheUserThatYouWantToDelete = 125; // 31
+
+        Response response = when().delete("/spartans/{id}", idOfTheUserThatYouWantToDelete); // 32
+
+        response.prettyPeek(); // 33
+        // go to All Spartan webpage and Add Spartan
+    }
 
 
+    @Test
+    @DisplayName("Delete half of the records")
+    public void test7() { // 34
+        int idOfTheUserThatYouWantToDelete = 125; // 35
+        Response response = given().
+                accept(ContentType.JSON).
+                when().
+                get("/spartans"); // 38
+        List<Integer> userIDs = response.jsonPath().getList("id"); // 39
+        // collected all user IDs
 
+        Collections.sort(userIDs, Collections.reverseOrder()); // 41
+        // sorted user IDs in descending order
+        System.out.println("Before: "+userIDs); // 44
+
+        for (int i=0; i< userIDs.size()/2; i++){ // 42
+            when().delete("/spartans/{id}", userIDs.get(i)); // 43
+        } // went through half of the collection, and deleted half of the users
+
+        System.out.println("After: " +userIDs); // 40
+        //    Response response2 = when().delete("/spartans/{id}", idOfTheUserThatYouWantToDelete); // 36
+
+        //    response.prettyPeek(); // 37
+
+
+    }
+
+    @Test
+    @DisplayName("Get all spartan ids and print it as list")
+    public void test8(){
+
+    }
 
 }
