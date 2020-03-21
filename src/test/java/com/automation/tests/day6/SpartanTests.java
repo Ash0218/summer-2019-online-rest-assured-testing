@@ -2,6 +2,7 @@ package com.automation.tests.day6; // 013020
 
 import com.automation.pojos.Spartan;
 import com.automation.utilities.ConfigurationReader;
+import com.github.javafaker.Faker;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -223,8 +224,36 @@ public class SpartanTests {
     }
 
     @Test
+    @DisplayName("Add 100 test users to Spartan app")
+    public void test8(){ // 45
+        Faker faker = new Faker(); // 46
+        for (int i=0; i<100; i++){ // 47
+            Spartan spartan = new Spartan(); // 48
+            spartan.setName(faker.name().firstName()); // 49
+            String phone = faker.phoneNumber().subscriberNumber(12).replaceAll("\\D", ""); // 50
+            // \\D -> all digit, "" -> empty. Replace all digits to empty
+            // remove all digits
+
+            spartan.setPhone(Long.parseLong(phone)); // 50
+            // convert it from String to Long
+            spartan.setGender("Male"); // 51
+
+            System.out.println(spartan); // 54
+
+            Response response = given().
+                    contentType(ContentType.JSON).
+                    body(spartan).
+            when().
+                    post("/spartans").prettyPeek(); // 52
+
+            System.out.println(response.jsonPath().getString("success")); // 54
+            assertEquals(201, response.getStatusCode()); // 53
+        } // error: "Phone number should be at least 10 digit and unique"
+    }
+
+    @Test
     @DisplayName("Get all spartan ids and print it as list")
-    public void test8(){
+    public void test9(){
 
     }
 
