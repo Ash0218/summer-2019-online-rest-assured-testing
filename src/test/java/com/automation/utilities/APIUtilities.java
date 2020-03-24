@@ -75,6 +75,7 @@ Delete all spartans
  */
 public static void deleteAllSpartans(){
     Response response = given().
+            basePath(baseURI).
             accept(ContentType.JSON).
             when().
             get("/spartans");
@@ -84,6 +85,6 @@ public static void deleteAllSpartans(){
         when().delete("/spartans/{id}", userIDs.get(i)).then().assertThat().statusCode(204);
         System.out.println("Deleted spartan with id: " + userIDs.get(i));
     }
-    return response;
+
 }
 }
