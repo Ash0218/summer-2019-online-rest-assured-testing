@@ -37,6 +37,16 @@ public class SpartanTests {
     @Test
     @DisplayName("Verify that /spartans end-point returns 200 and content type as JSON")
     public void test1(){ // 3
+        // web service may return different content type and to request
+        // JSON, you can just put in the given part ContentType.JSON
+        // If you want to ask for XML, you can put ContentType.XML
+        //  but, if web service configured only for JSON, it will not
+        //  give you anything else.
+        // GET, POST, PUT, DELETE, etc: HTTP verbs, or methods
+        // GET: to get the data from web service
+        // PUT: update existing record
+        // DELETE: delete something like delete spartan
+        // PATCH: partial update of existing record
         given().
                 accept(ContentType.JSON).
         when().
@@ -78,6 +88,34 @@ public class SpartanTests {
     given accept content type as XML
     when user sends GET request to /spartans
     then user saves payload into collection
+
+    We can convert payload (JSON body for example) into collection.
+    If it's a single variable -> "name" :"James", we can store in String or List<String>
+    If there are multiple names in the payload, we cannot use single String as a storage.
+    Instead, use List<String>
+    If payload returns object:
+        {
+        "name" : "James"
+        "age"  : 25
+        }
+        Then, we can store this object (on our, java side, as POJO or Map<String, ?>)
+
+    If it's a POJO, we need to create corresponding POJO class, in order to map properties
+     from json and java object:
+                Java class          JSON file
+        private String name     |    "name"
+        private int age         |    "age"
+
+    If you want to use different variable name in Java class, use @SerializedName annotation.
+                Java class              JSON file
+        @SerializedName("name")
+        private String firstName     |    "name"
+        private int age              |    "age"
+
+        otherwise, Gson, jackson, or any other Json parser, will not be able to
+         map properties correctly.
+         Serialization: from POJO (java object) to stream of bytes, let's say JSON
+         Deserialization: from stream of bytes, let's say JSON into POJO (java object)
      */
     @Test
     @DisplayName("Save payload into java collection")
@@ -224,19 +262,25 @@ public class SpartanTests {
     }
 
     @Test
-    @DisplayName("Add 100 test users to Spartan app")
+    @DisplayName("Add 10 test users to Spartan app")
     public void test8(){ // 45
         Faker faker = new Faker(); // 46
-        for (int i=0; i<100; i++){ // 47
+        for (int i=0; i < 10; i++){ // 47
             Spartan spartan = new Spartan(); // 48
             spartan.setName(faker.name().firstName()); // 49
+            // set name as faker
             String phone = faker.phoneNumber().subscriberNumber(12).replaceAll("\\D", ""); // 50
-            // \\D -> all digit, "" -> empty. Replace all digits to empty
+            // \\D -> all digit (0-9), "" -> empty. Replace all digits to empty
+            // ex: phone.matches("\\d") -> checks if this string contains only digits
+            // ex: phone.matches("[a-x]") -> checks if this string contains letters
+            //  in the range from a to x
             // remove all digits
+            // replaceAll(): takes regex (regular expression)
+            // regex: it's a pattern, means that one character can represent group or chars/ symbols/ digits
 
             spartan.setPhone(Long.parseLong(phone)); // 50
             // convert it from String to Long
-            spartan.setGender("Male"); // 51
+            spartan.setGender("Female"); // 51
 
             System.out.println(spartan); // 54
 
@@ -247,8 +291,11 @@ public class SpartanTests {
                     post("/spartans").prettyPeek(); // 52
 
             System.out.println(response.jsonPath().getString("success")); // 54
+            // whenever you successfully add new spartan you will get this message:
+            //  "A Spartan is Born!"
             assertEquals(201, response.getStatusCode()); // 53
         } // error: "Phone number should be at least 10 digit and unique"
+        // 201 here -> post request went well
     }
 
     @Test
