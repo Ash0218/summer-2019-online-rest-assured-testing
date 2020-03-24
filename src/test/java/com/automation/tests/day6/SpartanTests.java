@@ -116,7 +116,28 @@ public class SpartanTests {
          map properties correctly.
          Serialization: from POJO (java object) to stream of bytes, let's say JSON
          Deserialization: from stream of bytes, let's say JSON into POJO (java object)
+
+    If payload returns array of objects,
+
+         [
+                   {
+                       "id": 202,
+                       "name": "Helen Highwater",
+                       "gender": "Female",
+                       "phone": 60242012223
+                   },
+                   {
+                       "id": 203,
+                       "name": "Ellie Noise",
+                       "gender": "Female",
+                       "phone": 37812781233
+                   },
+               ]
+
+        Then we can store this payload as List<Map<?, ?>>>
+        or like list of POJO's List<Spartan>
      */
+
     @Test
     @DisplayName("Save payload into java collection")
     public void test3(){ // 7
