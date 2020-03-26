@@ -320,9 +320,58 @@ public class SpartanTests {
     }
 
     @Test
-    @DisplayName("Get all spartan ids and print it as list")
+    @DisplayName("Update spartan")
+    // update ID: 437 with some information
     public void test9(){
+        Spartan spartan = new Spartan().
+                                withGender("Male").
+                                withName("Mister Twister").
+                                withPhone(9999999999L); // 55
+
+        Response response = given().
+                                    accept(ContentType.JSON).
+                                    // what we expect
+
+                                    contentType(ContentType.JSON).
+                                    // what we send to the website
+
+                                    body(spartan).
+                                    pathParam("id", 437).
+                            put("/spartans/{id}").prettyPeek(); // 56
+        // run -> go to the Spartan website -> 437 Vasyl is changed to 437 Mister Twister.
+        // PUT: update existing record. Also, when you make PUT request, you need to specify
+        //  entire body.
+        // POST: create a new one
+        // We never POST/ PUT id; it must be auto-generated. If it's not like this -> a bug!
+        // If the contentType in the given() is: contentType(ContentType.JSON) -> you tell
+        //  the web service what data you are sending.
 
     }
+
+    @Test
+    @DisplayName("Update only name with PATCH")
+    public void test10(){ // 57
+        Map<String, String> update = new HashMap<>(); // 58
+        update.put("name", "SDET"); // 59
+        // to change the phone number: in #58, Map<String, Long> update = new HashMap<>();
+        //  #59: update.put("phone", "10000000000L");
+        // The phone number of id 380 will be changed to 10000000000L
+
+        Response response = given().
+                                accept(ContentType.JSON).
+                                contentType(ContentType.JSON).
+                                body(update).
+                                pathParam("id", 380).
+                // 380: the user id in Spartan website
+                                patch("/spartans/{id}"); // 60
+
+        response.prettyPeek(); // 61
+        // run -> id 380 has name, "SDET"
+        // POST: add new spartan
+        // PUT: update existing one, but you have to specify all properties
+        // PATCH: update existing one, but you may specify one or more parameters to update.
+
+    }
+
 
 }
