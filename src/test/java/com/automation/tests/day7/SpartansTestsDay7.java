@@ -50,10 +50,13 @@ public class SpartansTestsDay7 {
                 accept(ContentType.JSON).
                 body(file).
         when().
-                post("/spartans").
+                post("/spartans").prettyPeek().
         then().assertThat().
                 statusCode(201).
                 body("success", is("Spartan is Born!")); // 5
+        // run -> error b.c of bad request -> name was too long, so
+        //  go to spartan.json file and fix the name to "SDET" -> success
+
 
 
     }
