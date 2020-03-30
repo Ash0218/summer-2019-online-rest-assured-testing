@@ -36,6 +36,11 @@ public class Student {
     }
 
 
+    public Student(){
+        // fake constructor
+    }
+
+
     // Generate getters and setters (select all)
     public String getAdmissionNo() {
         return admissionNo;
