@@ -33,9 +33,10 @@ public class Contact {
         return contactId;
     }
 
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
-    }
+//    public void setContactId(int contactId) {
+//        this.contactId = contactId;
+//    }
+    // Remove this to avoid confusion
 
     public String getEmailAddress() {
         return emailAddress;

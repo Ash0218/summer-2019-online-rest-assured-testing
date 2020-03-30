@@ -31,9 +31,10 @@ public class Address {
         return addressId;
     }
 
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
-    }
+  //  public void setAddressId(int addressId) {
+  //      this.addressId = addressId;
+  //  }
+  // Remove this to avoid confusion
 
     public String getCity() {
         return city;
