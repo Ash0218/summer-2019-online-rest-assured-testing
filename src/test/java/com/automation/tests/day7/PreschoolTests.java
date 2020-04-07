@@ -1,5 +1,6 @@
 package com.automation.tests.day7; // 013120
 
+import com.automation.pojos.Student;
 import com.automation.utilities.ConfigurationReader;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -23,6 +24,20 @@ public class PreschoolTests {
     @BeforeAll
     public static void setup(){ // 1
         baseURI = ConfigurationReader.getProperty("school.uri"); // 2
+    }
+
+    @Test
+    @DisplayName("Get student with id 2633 and convert payload into POJO")
+    public void test1(){ // 3
+        Response response = given().
+                                accept(ContentType.JSON).
+                                pathParam("id", 2633).
+                            when().
+                                get("/student/{id}").prettyPeek(); // 4
+
+        Student student = response.jsonPath().getObject("students", Student.class); // 5
+
+        System.out.println(student); // 6
     }
 
 }
