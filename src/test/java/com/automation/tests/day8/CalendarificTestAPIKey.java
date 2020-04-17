@@ -48,14 +48,13 @@ public class CalendarificTestAPIKey {
      */
 
 
-    /*
+    /* Scenario 1:
     Given accept content type as JSON
     when user sends GET request to "/countries"
     Then user verifies that status code is 401
     And user verifies that status line contains "Unauthorized" message
     And user verifies that meta.error_detail contains "Missing or invalid api credentials." message
      */
-
 
     // status line: HTTP/1.1 401 Unauthorized
     @Test
@@ -70,8 +69,49 @@ public class CalendarificTestAPIKey {
                 statusLine(containsString("Unauthorized")).
                 body("meta.error_detail", containsString("Missing or invalid api credentials.")); // 4
         // Test unsuccessful -> Test passed
-
-
-
     }
+
+    /* Scenario 2:
+    Given accept content type as JSON
+    And query parameter api_key with valid API key
+    When user sends GET request to "/countries"
+    Then user verifies that status code is 200
+    And user verifies that status line contains "OK" message
+    And user verifies that countries array is not empty
+     */
+
+     /* Using Postman:
+     open Postman and add a new collection -> click + sign -> click
+         Collection -> Collection name: Calendarific -> Create -> click
+         three dots next to Calendarific -> Add request -> Request name:
+         Get all countries -> Save to Calendarific -> click "GET Get all
+         countries" -> copy the API base url from calendarific website:
+         https://calendarific.com/api/v2 -> paste to GET -> add "/countries"
+         to the url: https://calendarific.com/api/v2/countries -> Send -> put
+         "api_key" under KEY -> put your API key under value: 52372b83bf9da05a40bf123f9e3762197c019a18
+         -> Send -> Array is in the quote marks before :[. Ex: "countries": [
+         -> you see array is not empty. The KEY should be "api_key" b.c it is on the website.
+     */
+
+     // Using RestAssured:
+    @Test
+    public void test2(){ // 5
+        given().
+                accept(ContentType.JSON).
+                queryParam("api_key", "52372b83bf9da05a40bf123f9e3762197c019a18").
+                // 52372b83bf9da05a40bf123f9e3762197c019a18 -> my API key from the calendarific website
+        when().
+                get("/countries").prettyPeek().
+        then().assertThat().statusCode(200).
+                            statusLine(containsString("OK")).
+                            body("response.countries", not(empty())); // 6
+                            // "response.countries" -> b.c countries is in response
+                            // not(empty()) -> countries is not empty
+    }
+
+
+
+
+
+
 }
