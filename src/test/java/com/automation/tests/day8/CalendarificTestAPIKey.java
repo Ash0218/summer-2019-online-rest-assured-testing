@@ -110,8 +110,54 @@ public class CalendarificTestAPIKey {
     }
 
 
+    /* Scenario 3:
+    Given accept content type as JSON
+    And query parameter api_key with valid API key
+    And query parameter country is equals to US
+    And query parameter type is equals to national
+    And query parameter year equals to 2019
+    When user sends GET request to "/holidays"
+    Then user verifies that number of national holidays in US eqlaus to 11
+     */
+
+    /* Using Postman:
+    Go to Postman, click three dots in Calendarific and click "Add request"
+    -> Request name: Get list national holidays -> Save to Calendarific ->
+    double click the "Get list national holidays" -> copy the GET url from
+    Get all countries: https://calendarific.com/api/v2/countries?api_key=52372b83bf9da05a40bf123f9e3762197c019a18
+    and paste it to Get list national holidays -> In the url, delete
+    "countries" and change it to "holidays": https://calendarific.com/api/v2/holidays?api_key=52372b83bf9da05a40bf123f9e3762197c019a18
+    -> under api_key, put "country" -> next: "US" -> under country: type,
+    next: national -> under type: year, next: 2019 -> Send
+     */
+
+    // Using RestAssured:
+    @Test
+    @DisplayName("Verify that there are 11 national holidays in the US")
+    public void test3(){ // 7
+        Response response = given().
+                accept(ContentType.JSON).
+                queryParam("api_key", "52372b83bf9da05a40bf123f9e3762197c019a18").
+                queryParam("country", "US").
+                queryParam("type", "national").
+                queryParam("year", 2019).
+        when().
+                get("/holidays").prettyPeek(); // 8
+
+        // shorter way with syntax sugar (hamcrest matcher)
+        response.then().assertThat().statusCode(200).body("response.holidays", hasSize(11)); // 9
+        // List<Map<String, ?>> - list of objects, since there are nested objects, we cannot specify soe value type.
+        List<Map<String, ?>> holidays = response.jsonPath().get("response.holidays"); // 10
+        // "response.holidays" -> b.c holidays is in response
+
+        // regular way
+        assertEquals(11, holidays.size(), "Wrong number of holidays!"); // 11
+        // "Wrong number of holidays!" -> error message
+        assertEquals(200, response.getStatusCode()); // 12
 
 
+
+    }
 
 
 }
