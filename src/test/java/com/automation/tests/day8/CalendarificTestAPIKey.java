@@ -35,4 +35,18 @@ public class CalendarificTestAPIKey {
     public static void setup(){ // 1
         baseURI = ConfigurationReader.getProperty("calendarific.uri"); // 2
     }
+
+    /*
+    API key is a secret that the API generates and gives to the developer.
+    API key looks like a long string: 52372b83bf9da05a40bf123f9e3762197c019a18
+    API key can go as query parameter or inside a header. It depends on
+     web service; how you must pass API key (as a header parameter or a query parameter.
+    How it get's created? You go to web site, register, and service gives
+     you API key. Then you have to pass API key alongside with every request.
+    API key is easy to implement for developer and client. But non-technical
+     people have no idea about this. So, it's mostly used by developers only.
+     */
+
+
+
 }
