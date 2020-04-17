@@ -35,9 +35,17 @@ public class PreschoolTests {
                             when().
                                 get("/student/{id}").prettyPeek(); // 4
 
-        Student student = response.jsonPath().getObject("students", Student.class); // 5
+        // deserialization from JSON to POJO.
+        //  student -> a POJO
+        Student student = response.jsonPath().getObject("students[0]", Student.class); // 5
 
         System.out.println(student); // 6
+
+        assertEquals(2633, student.getStudentId()); // 7
+        assertEquals(11, student.getBatch()); // 8
+        assertEquals("123456", student.getAdmissionNo()); // 9
+        assertEquals("7925 Jones Branch Dr #3300", student.getContact().getPermanantAddress()); // 10
+        assertEquals("sdet@email.com", student.getContact().getEmailAddress()); // 11
     }
 
 }
