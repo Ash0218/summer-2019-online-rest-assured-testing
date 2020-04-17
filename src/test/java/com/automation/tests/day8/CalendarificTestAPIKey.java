@@ -48,5 +48,30 @@ public class CalendarificTestAPIKey {
      */
 
 
+    /*
+    Given accept content type as JSON
+    when user sends GET request to "/countries"
+    Then user verifies that status code is 401
+    And user verifies that status line contains "Unauthorized" message
+    And user verifies that meta.error_detail contains "Missing or invalid api credentials." message
+     */
 
+
+    // status line: HTTP/1.1 401 Unauthorized
+    @Test
+    @DisplayName("Verify that user cannot access web service wihtout valid API key")
+    public void test1(){ // 3
+        given().
+                accept(ContentType.JSON).
+        when().
+                get("/countries").prettyPeek().
+        then().assertThat().
+                statusCode(401).
+                statusLine(containsString("Unauthorized")).
+                body("meta.error_detail", containsString("Missing or invalid api credentials.")); // 4
+        // Test unsuccessful -> Test passed
+
+
+
+    }
 }
