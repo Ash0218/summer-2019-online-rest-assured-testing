@@ -57,7 +57,7 @@ public class OMDBTestsAPIKey {
                 queryParam("t", "Home Alone").
                 // "t" is from the website (www.omdbapi.com) for movies
                 queryParam("apikey", "8461f892").
-                // "apikey" is from the website and the valeu (8461f892) is given to me when I registered.
+                // "apikey" is from the website and the value (8461f892) is given to me when I registered.
         when().
                 get().prettyPeek(); // 6
         response.then().assertThat().statusCode(200).body("Actors", containsString("Macaulay Culkin")); // 7
@@ -67,6 +67,7 @@ public class OMDBTestsAPIKey {
         System.out.println(payload); // 9
 
         // entry: key=value pair
+        // Map is a collection of entries
         // how to iterate a map?
         for (Map.Entry<String, Object> entry: payload.entrySet()){
             System.out.println("Key: "+entry.getKey()+", value: "+entry.getValue()); // 10
