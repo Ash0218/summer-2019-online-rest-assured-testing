@@ -36,7 +36,7 @@ public class BadSSLTest {
     }
 
     @Test
-    @DisplayName("Access web site with bad SSL")
+    @DisplayName("Access web site with bad SSL (Must Fail)")
     public void test1(){ // 3
         Response response = get().prettyPeek(); // 4
         // it shows: javax.net.ssl.SSLHandshakeException -> b.c there is no
