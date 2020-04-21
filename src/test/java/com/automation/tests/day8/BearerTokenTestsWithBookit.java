@@ -38,8 +38,23 @@ public class BearerTokenTestsWithBookit {
 
 
     // Let's get the list of all rooms and verify that status code is 200
+    @Test
+    @DisplayName("Get list of rooms")
+    public void test1(){ // 6
+        // go to the website: https://cybertek-reservation-api-docs.herokuapp.com/
+        //  click Room -> HTTP Request: GET /api/rooms
+        Response response = given().
+                                header("Authorization", getToken()).
+                                // "Authorization" is from Postman. Headers -> Key -> Authorization
+                            when().get("/api/rooms").prettyPeek(); // 7
+                            // GET /api/rooms -> from https://cybertek-reservation-api-docs.herokuapp.com/
 
+    }
 
+    /*
+    Method that generates access token
+    @return bearer token
+     */
     public String getToken(){ // 3
         ////https://cybertek-reservation-api-qa.herokuapp.com/sign?email=vasyl@cybertekschool.com&password=cybertek2020
         Response response = given().
