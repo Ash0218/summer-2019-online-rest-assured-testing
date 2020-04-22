@@ -173,6 +173,7 @@ public class BookItTests {
         // 403 Forbidden - that means you are not authorized to do this
     }
 
+
     /**
      * given valid token is provided for teacher
      * and user provides following query parameters
@@ -183,7 +184,7 @@ public class BookItTests {
      */
 
     @Test
-    @DisplayName("Create a new team in B12 (positive)")
+    @DisplayName("Create a new team in B12 (positive)") // this is for teachers
     public void test7() {
         //Online_Hackers
 //        POST /api/teams/team
@@ -198,6 +199,7 @@ public class BookItTests {
 
         //only teacher allowed to modify database. <---- authorization
     }
+
 
     //test: add yourself to the team
     /**
@@ -227,7 +229,7 @@ public class BookItTests {
      * and user provides following query parameters
      * |first-name  |last-name    |email         |password    |role               |campus-location|batch-number|team-name      |
      * |    YourName|YourLastName |temp@email.com| anypassword|student-team-member|      VA       |    12      | Online_Hackers|
-     * when user performs POST request to "/api/students/student"
+     * when user performs POST request to "/api/students/student" --> from add student in http://cybertek-reservation-api-docs.herokuapp.com/#add-a-student
      * then user should verify that status code is 403
      */
 
@@ -246,12 +248,13 @@ public class BookItTests {
                 queryParam("campus-location", "VA").
                 queryParam("batch-number", 12).
                 queryParam("team-name", "Online_Hackers").
-                when().
+        when().
                 post("/api/students/student").
                 then().assertThat().statusCode(403).log().all(true).body("", contains("only teacher allowed to modify database."));
 
 
     }
+
 
     /**
      * POST /api/students/student
@@ -291,20 +294,21 @@ public class BookItTests {
                 when().
                 post("/api/students/student").
                 then().statusCode(201).log().all(true);
-//        as a response, I've got this one
-//        HTTP/1.1 201 Created
-//        Connection: close
-//        Date: Tue, 04 Feb 2020 20:22:03 GMT
-//        Content-Type: application/json
-//        Server: Jetty(9.4.8.v20171121)
-//        Via: 1.1 vegur
+//        as a response, I've got this one:
+    //        HTTP/1.1 201 Created
+    //        Connection: close
+    //        Date: Tue, 04 Feb 2020 20:22:03 GMT
+    //        Content-Type: application/json
+    //        Server: Jetty(9.4.8.v20171121)
+    //        Via: 1.1 vegur
 //
-//        user Vasyl Fomiuk has been added to database.
+    //        user Vasyl Fomiuk has been added to database.
         // if you are getting 422, that means email already exists
 
     }
 
-    //let's try to delete some student | 5486
+
+    //let's try to delete some student | id: 5486
 
     //DELETE /api/students/{id}
 
@@ -330,11 +334,12 @@ public class BookItTests {
         // statusCode(not(403)) - to ensure that status code is anything but not 403
     }
 
+
     //let's find how to delete all users from Online_Hackers team
     @Test
     @DisplayName("Delete all people from Online_Hackers team")
     public void test11() {
-        //I created toke only once
+        //I created token only once
         //first of all, token doesn't expire that fast
         //plus, this token in bookit never expire, it's a bug(it's not a bug, it's a feature
 
@@ -372,6 +377,7 @@ public class BookItTests {
 
         }
     }
+
 
     @Test
     @DisplayName("Get team info")
