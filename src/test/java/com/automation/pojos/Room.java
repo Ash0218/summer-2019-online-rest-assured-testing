@@ -4,7 +4,7 @@ public class Room {
 
     //if you don't want to serialize some property
     // from POJO -> to JSON it will not have id
-    // ex: private transient int id; -> id will not be appeared
+    // ex: private transient int id; -> id will not be appeared. ex: id=0
     private int id;
     private String name;
     private String description;
